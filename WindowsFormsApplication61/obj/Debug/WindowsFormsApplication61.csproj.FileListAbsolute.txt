@@ -1,0 +1,27 @@
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.exe.config
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.exe
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.pdb
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\NAudio.dll
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\NAudio.xml
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.csprojResolveAssemblyReference.cache
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.Form1.resources
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.Properties.Resources.resources
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.csproj.GenerateResource.Cache
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.exe
+c:\users\admin\documents\visual studio 2015\Projects\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.pdb
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.exe.config
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.exe
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.pdb
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\NAudio.dll
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\NAudio.xml
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.csproj.AssemblyReference.cache
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.Form1.resources
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.Properties.Resources.resources
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.csproj.GenerateResource.cache
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.csproj.CoreCompileInputs.cache
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.csproj.CopyComplete
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.exe
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.pdb
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Evdokimov\Desktop\WindowsFormsApplication61\WindowsFormsApplication61\bin\Debug\HtmlAgilityPack.xml

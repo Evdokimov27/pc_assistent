@@ -1,0 +1,16 @@
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.exe.config
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.exe
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\WindowsFormsApplication61.pdb
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\NAudio.dll
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\bin\Debug\NAudio.xml
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\PCAssist.csproj.AssemblyReference.cache
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.Test.resources
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.Properties.Resources.resources
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\PCAssist.csproj.GenerateResource.cache
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\PCAssist.csproj.CoreCompileInputs.cache
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\PCAssist.csproj.CopyComplete
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.exe
+C:\Users\Evdokimov\Desktop\PC Assist\WindowsFormsApplication61\obj\Debug\WindowsFormsApplication61.pdb

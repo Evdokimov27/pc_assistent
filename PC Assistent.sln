@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCAssist", "WindowsFormsApplication61\PCAssist.csproj", "{031D434D-7562-45B9-ACE0-A4681D4F0336}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{031D434D-7562-45B9-ACE0-A4681D4F0336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{031D434D-7562-45B9-ACE0-A4681D4F0336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{031D434D-7562-45B9-ACE0-A4681D4F0336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{031D434D-7562-45B9-ACE0-A4681D4F0336}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CD50C2D-786A-45D6-94DD-2CAFDA9DAFB0}
+	EndGlobalSection
+EndGlobal
