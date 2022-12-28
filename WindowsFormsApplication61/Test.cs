@@ -1,6 +1,8 @@
 ﻿using HtmlAgilityPack;
 using NAudio.Wave;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -12,9 +14,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace WindowsFormsApplication61
 {
+   
     public partial class Test : Form
     {
         private const int APPCOMMAND_BROWSER_BACKWARD = 1;
@@ -71,6 +75,8 @@ namespace WindowsFormsApplication61
         private const int APPCOMMAND_MEDIA_CHANNEL_DOWN = 52;
         private const int WM_APPCOMMAND = 0x319;
 
+
+
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, int lParam);
         [DllImport("user32.dll")]
@@ -83,8 +89,9 @@ namespace WindowsFormsApplication61
 
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
-       
+
         Tag tag = new Tag();
+
         int max = 0;
         int interval = 0;
         Font f = new Font("Arial", 10);
@@ -96,27 +103,67 @@ namespace WindowsFormsApplication61
         int end = 0;
         int len_sig = 0;
         int len_sil = 0;
-        static  String ycText="";
+        static String ycText = "";
         public WaveInEventArgs arg;
         int pos = 0;
         int[] data;
+        public string app_path;
+        string json;
+        App app = new App();
+        Buttons buttons= new Buttons();
+        ToolTip t = new ToolTip();
 
-        
+
         public Test()
         {
             datab = new byte[48000 * 16 * 2];
             data = new int[48000 * 16];
             InitializeComponent();
+            notifyIcon1.Visible = true;
+            // добавляем Эвент или событие по 2му клику мышки, 
+            //вызывая функцию  notifyIcon1_MouseDoubleClick
+            this.notifyIcon1.MouseDoubleClick += new MouseEventHandler(notifyIcon1_MouseDoubleClick);
+
+            // добавляем событие на изменение окна
+            this.Resize += new System.EventHandler(this.Form1_Resize);
         }
         AudioRecorder r;
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            // проверяем наше окно, и если оно было свернуто, делаем событие        
+            if (WindowState == FormWindowState.Minimized)
+            {
+                // прячем наше окно из панели
+                this.ShowInTaskbar = false;
+                // делаем нашу иконку в трее активной
+                notifyIcon1.Visible = true;
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
+            t.SetToolTip(textBox2, "Чтобы указать, что любое сочетание клавиш SHIFT, CTRL и ALT должно быть удерживано, а несколько других клавиш нажимаются, заключите код этих ключей в круглые скобки.");
+
             r = new AudioRecorder();
             r.f = this;
             r.Start();
+            if (!File.Exists("app.json"))
+            {
+                json = JsonConvert.SerializeObject(app.dict, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText("app.json", json);
+            }
+            if (!File.Exists("buttons.json"))
+            {
+                json = JsonConvert.SerializeObject(app.dict, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText("buttons.json", json);
+            }
 
-            comboBox1.Items.Add("123"); 
-            
+                json = File.ReadAllText("app.json");
+             app.dict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
+             
+             
+             json = File.ReadAllText("buttons.json");
+             buttons.dict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -143,7 +190,7 @@ namespace WindowsFormsApplication61
         }
         public async Task<string> speech_recognition(String filename)
         {
-            String iamToken = "t1.9euelZqYz5qeiozOl8eUjZbIkM_Jze3rnpWayJmTmc6UyZqRloqam4-emMrl8_cCcFZi-e9BIWM3_N3z90IeVGL570EhYzf8.L_DaMI9pl-HLlaPKjAfRUPcxwO-7OarNR5O05XkLRg_qSJKoMp5vfu366jh9UIfezHv_nFoTyqkVKuvVoi4zAQ"; // IAM-токен
+            String iamToken = "t1.9euelZqUiszNzJyVnMyai4zLksfNyO3rnpWayZeOx8jOlp7KkZ3Mj8-di4vl8_dCTFBi-e8MdQ8o_d3z9wJ7TWL57wx1Dyj9zef1656VmpuYjcbHyM6KmcfMlsbLiouN7_0.6v9JSkOpeOFC8B7RBjrlsJJ7r_hCCPvVg89JfEKDF3Z_PFDH3fSp6FiJoJdPY0k18eQsiWBS7P5Mw175-TgvDQ"; // IAM-токен
             String folderId = "b1gn1nfvk2nna6m0ms56";// # Идентификатор каталога
             String audioFileName = filename;
 
@@ -170,9 +217,9 @@ namespace WindowsFormsApplication61
 
             var response = await client.PostAsync(url, content);
             var contents = await response.Content.ReadAsStringAsync();
-            ycText= await Task.FromResult(contents.ToString());
+            ycText = await Task.FromResult(contents.ToString());
 
-                   
+
 
             return ycText;
 
@@ -182,13 +229,13 @@ namespace WindowsFormsApplication61
         int cnt = 0;
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            
+
             if (arg == null) return;
-            
-            for (int i = 10; i < arg.BytesRecorded/2; i++)
+
+            for (int i = 10; i < arg.BytesRecorded / 2; i++)
             {
                 cnt++;
-                int y = BAToInt16(arg.Buffer, i*2); ;
+                int y = BAToInt16(arg.Buffer, i * 2); ;
                 int y1 = BAToInt16(arg.Buffer, i * 2 - 20); ;
                 if (max < Math.Abs(y)) max = Math.Abs(y);
                 if (cnt == 48000)
@@ -202,7 +249,7 @@ namespace WindowsFormsApplication61
                     else {//тишина
 
 
-                        if (len_sig >=48000)
+                        if (len_sig >= 48000)
                         {
                             datab = int16ToBA(data, datab);
                             WaveFormat waveformat = new WaveFormat(48000, 16, 1);
@@ -213,7 +260,7 @@ namespace WindowsFormsApplication61
                             {
                                 WaveFileWriter.CreateWaveFile("text.wav", convertedStream);
                                 speech_recognition("text.wav");
-                                
+
                             }
                             len_sig = 0;
 
@@ -228,14 +275,14 @@ namespace WindowsFormsApplication61
                 }
                 try
                 {
-                  
-                            
-                            
-                    
+
+
+
+
                     data[pos] = y;
                     pos++;
                     if (pos >= 48000 * 16) pos = 0;
-                 
+
                 }
                 catch (Exception e1) { }
             }
@@ -244,186 +291,41 @@ namespace WindowsFormsApplication61
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (ycText.Length < 2) return;
-            ycText=ycText.Replace('{', ' ');
+            ycText = ycText.Replace('{', ' ');
             ycText = ycText.Replace('}', ' ');
             ycText = ycText.Replace('"', ' ');
             label1.Text = ycText.Split(':')[1].Trim();
             if (speach != ycText.Split(':')[1].Trim())
             {
                 speach = ycText.Split(':')[1].Trim();
-                for (int i = 0; i < tag.time.Length; i++)
+                for (int i = 0; i < app.dict.Count; i++)
                 {
-                    if (speach ==  "Бублик " + tag.time[i])
+                    for (int j = 1; j < app.dict[i.ToString()].Length; j++)
                     {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_MEDIA_PLAY << 16);
-                    }
-                }
-                for (int i = 0; i < tag.search.Length; i++)
-                {
-                    if ( i < 1 && speach.Split(' ')[0] + " " + speach.Split(' ')[1] ==  "Бублик " + tag.search[i])
-                    {
-                          var prs = new ProcessStartInfo("opera.exe");
-                          prs.Arguments = "http://google.com/search?q=" + speach.Remove(0, speach.IndexOf(' ') + speach.Split(' ')[1].Length+2).Replace(" ", "+");
-                          Process.Start(prs);
-                    }
-                }
-                for (int i = 0; i < tag.search.Length; i++)
-                {
-                    if ( i > 0 && speach ==  "Бублик " + tag.search[i])
-                    {
-                        var prs = new ProcessStartInfo("opera.exe");
-                        Process.Start(prs);
-                    }
-                }
-                for (int i = 0; i < tag.youtube.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.youtube[i])
-                    {
-                        var prs = new ProcessStartInfo("opera.exe");
-                        prs.Arguments = "https://youtube.com/";
-                        Process.Start(prs);
-                    }
-                }
-                for (int i = 0; i < tag.vk.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.vk[i])
-                    {
-                        var prs = new ProcessStartInfo("opera.exe");
-                        prs.Arguments = "https://vk.com/im?sel=275546938";
-                        Process.Start(prs);
-                        
-                    }
-                }
-                for (int i = 0; i < tag.music.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.music[i])
-                    {
-                        Process.Start(tag.music_app);
-                    }
-                }
-                for (int i = 0; i < tag.downsound.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.downsound[i])
-                    {
-                        for(int j=0; j < 50; j++)
+                        if (speach == app.dict[i.ToString()][j])
                         {
-                            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_VOLUME_DOWN << 16);
+                            var prs = new ProcessStartInfo(app.dict[i.ToString()][0]);
+                            prs.Arguments = app.dict[i.ToString()][1].ToString();
+                            Process.Start(prs);
                         }
-                        for (int j = 0; j < 5; j++)
-                        {
-                            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_VOLUME_UP << 16);
-                        } 
+
                     }
                 }
-                for (int i = 0; i < tag.fiftysound.Length; i++)
+
+                for (int i = 0; i < buttons.dict.Count; i++)
                 {
-                    if (speach ==  "Бублик " + tag.fiftysound[i])
+                    for (int j = 1; j < buttons.dict[i.ToString()].Length; j++)
                     {
-                        for (int j = 0; j < 50; j++)
+                        if (speach == buttons.dict[i.ToString()][j])
                         {
-                            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_VOLUME_DOWN << 16);
-                        }
-                        for (int j = 0; j < 25; j++)
-                        {
-                            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_VOLUME_UP << 16);
+                            SendKeys.Send(buttons.dict[i.ToString()][0]);
                         }
                     }
+
                 }
-                for (int i = 0; i < tag.upsound.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.upsound[i])
-                    {
-                        for (int j = 0; j < 50; j++)
-                        {
-                            SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_VOLUME_UP << 16);
-                        }
-                    }
-                }
-                for (int i = 0; i < tag.play.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.play[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_MEDIA_PLAY << 16);
-                    }
-                }
-                for (int i = 0; i < tag.pause.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.pause[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_MEDIA_PAUSE << 16);
-                    }
-                }
-                for (int i = 0; i < tag.next.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.next[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_MEDIA_NEXTTRACK << 16);
-                    }
-                }
-                for (int i = 0; i < tag.previsou.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.previsou[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_MEDIA_PREVIOUSTRACK << 16);
-                    }
-                }
-                for (int i = 0; i < tag.refresh_site.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.refresh_site[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_BROWSER_REFRESH << 16);
-                    }
-                }
-                for (int i = 0; i < tag.back_site.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.back_site[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_BROWSER_BACKWARD << 16);
-                    }
-                }
-                for (int i = 0; i < tag.next_site.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.next_site[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_BROWSER_FORWARD << 16);
-                    }
-                }
-                for (int i = 0; i < tag.close.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.close[i])
-                    {
-                        SendKeys.Send("%{F4}");
-                    }
-                }
-                for (int i = 0; i < tag.exit.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.exit[i])
-                    {
-                        this.Close();
-                    }
-                }
-                for (int i = 0; i < tag.back_site.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.back_site[i])
-                    {
-                        SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_BROWSER_BACKWARD << 16);
-                    }
-                }
-                for (int i = 0; i < tag.cmd.Length; i++)
-                {
-                    if (speach ==  "Бублик " + tag.cmd[i])
-                    {
-                        Process.Start("Taskmgr.exe");
-                    }
-                }
-                for (int i = 0; i < tag.otkat.Length; i++)
-                {
-                    if (speach == "Бублик " + tag.otkat[i])
-                    {
-                        SendKeys.Send("%{F10}");
-                    }
-                }
+                
             }
+            
         }
 
 
@@ -443,10 +345,14 @@ namespace WindowsFormsApplication61
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int j = 0; j < 0 + 1; j++)
-            {
-                SendMessageW(this.Handle, WM_APPCOMMAND, this.Handle, APPCOMMAND_VOLUME_DOWN << 16);
-            }
+            System.Diagnostics.Process txt = new System.Diagnostics.Process();
+            txt.StartInfo.FileName = "notepad.exe";
+            txt.StartInfo.Arguments = "buttons.json";
+            txt.Start();
+            System.Diagnostics.Process txt2 = new System.Diagnostics.Process();
+            txt2.StartInfo.FileName = "notepad.exe";
+            txt2.StartInfo.Arguments = "app.json";
+            txt2.Start();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -477,11 +383,107 @@ namespace WindowsFormsApplication61
         HtmlAgilityPack.HtmlDocument htmlSnippet = new HtmlAgilityPack.HtmlDocument();
 
 
-        
+
 
         private void button3_Click_1(object sender, EventArgs e)
-        {
+        {  
+            List<string> mass = new List<string>();
+                mass.Add(app_path);
+                mass.Add(textBox1.Text);
+                for (int i = 0; i < listBox1.Items.Count; i++)
+                {
+                    mass.Add(listBox1.Items[i].ToString());
+                }
+                app.dict.Add(app.dict.Count.ToString(), mass.ToArray());
+                
+                for (int i = 0; i < listBox1.Items.Count; i++)
+                {
 
+                }
+
+            string json = JsonConvert.SerializeObject(app.dict, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText("app.json", json);
+
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    //Read the contents of the file into a stream
+                    var fileStream = openFileDialog.OpenFile();
+
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        fileContent = reader.ReadToEnd();
+                    }
+                }
+                app_path = filePath;
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Add(textBox4.Text);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            List<string> mass = new List<string>();
+            mass.Add(textBox2.Text);
+            for (int i = 0; i < listBox2.Items.Count; i++)
+            {
+                mass.Add(listBox2.Items[i].ToString());
+            }
+            MessageBox.Show(mass[1]);
+            buttons.dict.Add(buttons.dict.Count.ToString(), mass.ToArray());
+
+            string json = JsonConvert.SerializeObject(buttons.dict, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText("buttons.json", json);
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            listBox2.Items.Clear();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            listBox2.Items.Add(textBox3.Text);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            json = JsonConvert.SerializeObject(app.dict, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText("app.json", json);
+
+            json = JsonConvert.SerializeObject(app.dict, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText("buttons.json", json);
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            notifyIcon1.Visible = false;
+            // возвращаем отображение окна в панели
+            this.ShowInTaskbar = true;
+            //разворачиваем окно
+            WindowState = FormWindowState.Normal;
         }
     }
 

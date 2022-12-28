@@ -6,13 +6,31 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApplication61
 {
+    class App
+    {
+        public Dictionary<string, string[]> dict = new Dictionary<string, string[]>()
+        {
 
+        };
+        private object key;
+        private object value;
+    }
+     class Buttons
+    {
+        public Dictionary<string, string[]> dict = new Dictionary<string, string[]>()
+        {
 
+        };
+        private object key;
+        private object value;
+    }
 
     class Tag
     {
-        public string music_app = "";
+        
 
+        public string music_app = "";
+        public string[][] name = { new [] {"qwe"} }; 
         public string[] time = { "сколько время", "скажи время", "текущее время", "время" };
         public string[] youtube = { "открой youtube", "включи youtube" };
         public string[] vk = { "открой вк", "открой переписки", "открой сообщения" };
@@ -32,7 +50,7 @@ namespace WindowsFormsApplication61
         public string[] back_site = { "открой прошлую вкладку" };
         public string[] exit = { "отключись" };
         public string[] close = { "закрой", "закрой приложение" };
-        public string[] cmd = { "открой диспетчер задач","включи диспетчер задач", "контрол альт делит" };
+        public string[] cmd = { "открой диспетчер задач","включи диспетчер задач"};
         public string[] otkat = { "откат", "откати"};
     }
 
